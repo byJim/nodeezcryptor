@@ -21,7 +21,6 @@ void napiDecryptFile(const Napi::CallbackInfo& info) {
 
     std::string inputFn = info[1].As<Napi::String>().Utf8Value();
     std::string outputFn = info[2].As<Napi::String>().Utf8Value();
-    std::cout << inputFn;
     decryptFile(decKey, inputFn.c_str(), outputFn.c_str());
     
     return;
