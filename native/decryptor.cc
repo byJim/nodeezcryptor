@@ -26,9 +26,26 @@ void napiDecryptFile(const Napi::CallbackInfo& info) {
     return;
 }
 
+Napi::Value napiDecryptBuffer(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+
+    std::string decKeyArg = info[0].As<Napi::String>().Utf8Value();
+    char* decKey = new char[17];
+    strcpy(decKey, decKeyArg.c_str());
+    size_t arrlen = info[1].As<Napi::Buffer<unsigned char>>().Length();
+    unsigned char* buffer = info[1].As<Napi::Buffer<unsigned char>>().Data();
+
+    unsigned char* decrypted = new unsigned char[arrlen];
+    decryptBytes(decKey, arrlen, buffer, decrypted);
+
+    return Napi::Buffer<unsigned char>::New(env, decrypted, arrlen);
+}
+
+
 Napi::Object Init(Napi::Env env, Napi::Object exports) {
     exports.Set(Napi::String::New(env, "getKey"), Napi::Function::New(env, napiGetKey));
     exports.Set(Napi::String::New(env, "decryptFile"), Napi::Function::New(env, napiDecryptFile));
+    exports.Set(Napi::String::New(env, "decryptBuffer"), Napi::Function::New(env, napiDecryptBuffer));
     return exports;
 }
 

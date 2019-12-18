@@ -43,4 +43,31 @@ void decryptFile(char* decKey, const char* inputfn, const char* outputfn) {
         }
         i++;
     }
+    fclose(ofile);
+    fclose(ifile);
+}
+
+void decryptBytes(char* decKey, long length, unsigned char* data, unsigned char* output) {
+    unsigned char* bfKey = reinterpret_cast<unsigned char*>(decKey);
+    BF_KEY key;
+    BF_set_key(&key, 16, bfKey);
+    int count = length/2048;
+
+    int i=0;
+    for(i=0; i<count; i++) {
+        if (i % 3 == 0) {
+            unsigned char buffer[2048];
+            memcpy(buffer, &data[i*2048], 2048);
+            
+            unsigned char decrypted[2048];
+            unsigned char IV[8] = {0,1,2,3,4,5,6,7};
+            BF_cbc_encrypt(buffer, decrypted, 2048, &key, IV, BF_DECRYPT);
+            memcpy(&output[i*2048], decrypted, 2048);
+        } else {
+            memcpy(&output[i*2048], &data[i*2048], 2048);
+        }
+    }
+    if (length % 2048 != 0){
+        memcpy(&output[i*2048], &data[i*2048], (length-(i*2048)));
+    }
 }
