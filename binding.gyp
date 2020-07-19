@@ -9,10 +9,15 @@
         "<!@(node -p \"require('node-addon-api').include\")"
       ],
       'defines': [ 'NAPI_DISABLE_CPP_EXCEPTIONS' ],
-      'libraries': [
-        '-lcrypto',
-        '-lssl'
+      'conditions': [
+        ["OS in \"linux \"", {
+          'libraries': [
+            '-lcrypto',
+            '-lssl'
+          ]
+        }]
       ]
+      
     }
   ]
 }
