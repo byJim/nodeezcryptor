@@ -4,7 +4,8 @@
 
 ### Linux:
 
-Install your OS openssl libraries. (`apt install libssl-dev` on Ubuntu)
+Install your OS OpenSSL libraries.   
+Ubuntu: `apt install libssl-dev`  
 
 ### Windows:
 
