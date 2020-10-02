@@ -32,14 +32,14 @@ void decryptFile(char* decKey, const char* inputfn, const char* outputfn) {
     int i=0;
     while (!feof(ifile)) {
         unsigned char buffer[2048];
-        fread(buffer, 1, 2048, ifile);
-        if (i % 3 == 0) {
+        int read = fread(buffer, 1, 2048, ifile);
+        if (i % 3 == 0 && read == 2048) {
             unsigned char decrypted[2048];
             unsigned char IV[8] = {0,1,2,3,4,5,6,7};
             BF_cbc_encrypt(buffer, decrypted, 2048, &key, IV, BF_DECRYPT);
             fwrite(decrypted, sizeof(unsigned char), sizeof(decrypted), ofile);
         } else {
-            fwrite(buffer, sizeof(unsigned char), sizeof(buffer), ofile);
+            fwrite(buffer, sizeof(unsigned char), read, ofile);
         }
         i++;
     }
