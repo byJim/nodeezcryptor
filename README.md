@@ -12,7 +12,7 @@ Ubuntu: `apt install libssl-dev`
 OpenSSL Precompiled libraries & header files are now included in this repo.
 
 ## package.json:
-    "nodeezcryptor": "git+https://notabug.org/xefglm/nodeezcryptor.git#master"
+    "nodeezcryptor": "git+https://github.com/byJim/nodeezcryptor/tree/master"
 
 ## Example:
 
